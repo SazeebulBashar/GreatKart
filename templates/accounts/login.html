@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+    
+
+{% block content %}
+
+
+{% if request.GET.verified == 'False'%}
+    
+
+    
+<div class="container mx-auto alert alert-info" role="alert" style="max-width: 600px; margin-top:100px; margin-bottom:100px">
+<p>We have sent You a link to [{{request.GET.email}}], click on that link to verify your account. </p>
+</div>
+
+{% else %}
+<!-- ============================ COMPONENT LOGIN   ================================= -->
+<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+    <div class="card-body">
+    <h4 class="card-title mb-4">Sign in</h4>
+    {% include 'components/alert.html' %}
+    <form action="{% url 'accounts:login' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+           <input type="email" class="form-control" placeholder="Email Address" name="email">
+        </div> <!-- form-group// -->
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Password" name="password">
+        </div> <!-- form-group// -->
+        
+        <div class="form-group">
+            <a href="{% url 'accounts:forgotPassword' %}" class="float-right">Forgot password?</a> 
+         
+        </div> <!-- form-group form-check .// -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+        </div> <!-- form-group// -->    
+    </form>
+    </div> <!-- card-body.// -->
+  </div> <!-- card .// -->
+
+   <p class="text-center mt-4">Don't have account? <a href="{% url 'accounts:register' %}">Sign up</a></p>
+   <br><br>
+<!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+{% endif %}
+{% endblock  %}
+    
+
+<!-- Hi {{user.first_name}} {{user.last_name}}, Please click below link to verify your account
+    http://{{domain}}{% url 'accounts:activate' uidb64=uid token=token %}-->
